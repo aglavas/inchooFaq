@@ -1,0 +1,23 @@
+<?php
+/** @var \Inchoo\Faq\Block\Tab\ListBlock $block */
+?>
+
+<div class="faq-list" style="float: left; width: 50%; display: inline-block;">
+    <h2 style="color: #1979c3"><?php $block->getTitle();?></h2>
+
+    <dl>
+    <?php
+        foreach ($block->getPublishedQuestions() as $question)
+        {
+    ?>
+        <div>
+            <dt><?=__('Question')?></dt>
+                <dd><?=$question->getQuestion()?></dd>
+            <dt><?=__('Answer')?></dt>
+                <dd><?=$question->getAnswer()?></dd>
+        </div>
+        <hr>
+    <?php
+        }
+    ?>
+</div>

@@ -1,0 +1,45 @@
+<?php
+/**
+ * @var \Inchoo\Faq\Block\Questions\ListBlock $block
+ */
+?>
+
+<div class="faq-list">
+    <table class="data table table-order-items" id="my-question-table">
+        <thead>
+        <tr>
+            <th scope="col" class="col id"><?= __('Id #')?></th>
+            <th scope="col" class="col question"><?= __('Question')?></th>
+            <th scope="col" class="col answer"><?= __('Answer') ?></th>
+            <th scope="col" class="col product"><?= __('Product') ?></th>
+            <th scope="col" class="col date"><?= __('Date') ?></th>
+        </tr>
+        </thead>
+        <tbody>
+    <?php
+
+    foreach ($block->getQuestions() as $question)
+    {
+    ?>
+        <tr>
+            <td data-th="<?= $block->escapeHtml(__('Id #')) ?>" class="col id">
+                <a class="product-item-link"
+                   href="<?=$block->getSingleUrl() . $question->getId() ?>">
+                    <?= $question->getId()  ?>
+                </a>
+            </td>
+            <td data-th="<?= $block->escapeHtml(__('Question')) ?>" class="col question"><?= $block->escapeHtml($question->getQuestion()) ?></td>
+            <td data-th="<?= $block->escapeHtml(__('Answer')) ?>" class="col answer"><?= ($question->getAnswer() ? $block->escapeHtml($question->getAnswer()) : "<div style='color: red'>-<div>"  )?></td>
+            <td data-th="<?= $block->escapeHtml(__('Product')) ?>" class="col product"> <?= $question->getProductName() ?>  </td>
+            <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= $question->getDate() ?></td>
+        </tr>
+    <?php
+    }
+
+    ?>
+
+        </tbody>
+    </table>
+
+
+</div>

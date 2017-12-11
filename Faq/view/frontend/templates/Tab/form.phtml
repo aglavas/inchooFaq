@@ -1,0 +1,33 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// @codingStandardsIgnoreFile
+
+/** @var \Inchoo\Faq\Block\Tab\Form $block */
+?>
+
+<div class="faq-form" style="float: right; width: 50%; display: inline-block;">
+
+    <h2 style="color: #1979c3"><?= $block->getTitle()?></h2>
+
+    <form action="<?= $block->escapeUrl($block->getAction()) ?>" class="review-form" method="post" id="review-form" data-role="product-review-form" data-bind="scope: 'review-form'">
+        <?= $block->getBlockHtml('formkey') ?>
+        <?= $block->getChildHtml('form_fields_before') ?>
+        <fieldset class="fieldset review-fieldset" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
+            <div class="field review-field-text required">
+                <label for="faq_question" class="label"><span><?= $block->escapeHtml(__('Question')) ?></span></label>
+                <div class="control">
+                    <textarea name="question" id="faq_question" cols="5" rows="3" data-validate="{required:true}" data-bind="value: faq().question"></textarea>
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar review-form-actions">
+            <div class="primary actions-primary">
+                <button type="submit" class="action submit primary"><span><?= $block->escapeHtml(__('Submit')) ?></span></button>
+            </div>
+        </div>
+    </form>
+</div>

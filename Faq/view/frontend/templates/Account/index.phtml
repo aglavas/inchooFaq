@@ -1,0 +1,25 @@
+<?php
+/**
+ * @var \Inchoo\Faq\Block\Questions\IndexBlock $block
+ */
+/** @var \Inchoo\Faq\Model\Faq $question */
+$question = $block->getQuestionData();
+?>
+<h1 style="color: #1979c3"><?= $block->getTitle() . $question->getId(); ?></h1>
+<dl>
+    <dt><?=__('Question')?></dt>
+    <dd><?=$block->escapeHtml($question->getQuestion())?></dd>
+    <dt><?=__('Answer')?></dt>
+    <dd><?=$block->escapeHtml($question->getAnswer())?></dd>
+    <dt><?=__('Product')?></dt>
+    <dd>
+        <a class="product-item-link"
+           href="<?=$block->getBaseUrl() .  $question->getProductUrl()?>">
+            <?= $question->getProductName() ?>
+        </a>
+    </dd>
+    <dt><?=__('Date')?></dt>
+    <dd><?=$question->getDate()?></dd>
+</dl>
+
+<a href="<?= $block->getListUrl() ?>"><</a>

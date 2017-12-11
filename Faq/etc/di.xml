@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Inchoo\Faq\Api\Data\FaqInterface" type="Inchoo\Faq\Model\Faq" />
+    <preference for="Inchoo\Faq\Api\FaqRepositoryInterface" type="Inchoo\Faq\Model\FaqRepository" />
+</config>

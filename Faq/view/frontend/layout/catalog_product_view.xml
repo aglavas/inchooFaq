@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="review_product_form_component"/>
+    <body>
+        <referenceBlock name="product.info.details">
+            <block class="Inchoo\Faq\Block\Tab\Faq" name="faq.tab" template="Inchoo_Faq::Tab/faq.phtml" group="detailed_info" >
+                <arguments>
+                    <argument translate="true" name="title" xsi:type="string">Faq</argument>
+                </arguments>
+                <container name="faq.container" htmlTag="div" htmlClass="faq-view">
+                    <block class="Inchoo\Faq\Block\Tab\ListBlock" name="product.faq.list" template="Inchoo_Faq::Tab/list.phtml"/>
+                    <block class="Inchoo\Faq\Block\Tab\Form" name="product.faq.form" after="product.faq.list" template="Inchoo_Faq::Tab/form.phtml"/>
+                </container>
+            </block>
+        </referenceBlock>
+    </body>
+</page>
