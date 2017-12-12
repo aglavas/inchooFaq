@@ -52,14 +52,6 @@ class ListBlock extends \Magento\Framework\View\Element\Template
     }
 
     /**
-     * Returns title
-     */
-    public function getTitle()
-    {
-        return __("Previous questions: ");
-    }
-
-    /**
      * Returns published questions
      *
      * @return Collection

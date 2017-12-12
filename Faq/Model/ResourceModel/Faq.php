@@ -3,9 +3,31 @@
 namespace Inchoo\Faq\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Catalog\Model\Product\Attribute\Repository;
 
 class Faq extends AbstractDb
 {
+    /**
+     * @var
+     */
+    private $attributeRepository;
+
+    /**
+     * Faq constructor.
+     * @param \Magento\Framework\Model\ResourceModel\Db\Context $context
+     * @param null $connectionName
+     * @param Repository $repository
+     */
+    public function __construct
+    (
+        \Magento\Framework\Model\ResourceModel\Db\Context $context,
+        Repository $repository
+    )
+    {
+        $this->attributeRepository = $repository;
+        parent::__construct($context);
+    }
+
     /**
      * Initialize news Resource
      *
@@ -28,10 +50,12 @@ class Faq extends AbstractDb
     {
         $select = parent::_getLoadSelect($field, $value, $object);
 
+        $attribute = $this->attributeRepository->get('name');
+
         $select->joinLeft(
             ['product_table' => $this->getTable('catalog_product_entity_varchar')],
-            "inchoo_faq.product_id = product_table.entity_id",
-            ['product_name' => 'product_table.value'])->where('attribute_id', 126);
+            "inchoo_faq.product_id = product_table.entity_id AND product_table.store_id = 0",['product_name' => 'product_table.value']
+        )->where('product_table.attribute_id = ?', $attribute->getAttributeId());
 
         $select->joinLeft(
             ['url_table' => $this->getTable('url_rewrite')],

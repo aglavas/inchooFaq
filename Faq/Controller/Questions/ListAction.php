@@ -6,7 +6,6 @@ use Inchoo\Faq\Controller\Base\Controller;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Framework\Registry;
 
 class ListAction extends Controller
 {
@@ -16,26 +15,18 @@ class ListAction extends Controller
     private $resultPageFactory;
 
     /**
-     * @var \Magento\Framework\Registry
+     * ListAction constructor.
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     * @param Session $session
      */
-    private $registry;
-
-    /**
-     * @var \Magento\Framework\ObjectManagerInterface
-     */
-    private $objectManager;
-
-
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
-        Registry $registry,
         Session $session
     ) {
 
         $this->resultPageFactory = $resultPageFactory;
-        $this->registry = $registry;
-        $this->objectManager = $context->getObjectManager();
         parent::__construct($context, $session);
     }
 
@@ -44,8 +35,6 @@ class ListAction extends Controller
      */
     public function execute()
     {
-        $this->registry->register('userId', $this->userId);
-
         return $this->renderMyQuestionsPage($this->resultPageFactory, 'faq.questions.list' );
     }
 }

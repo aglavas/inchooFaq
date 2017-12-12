@@ -12,21 +12,20 @@ use Magento\Framework\View\Element\Template\Context;
 
 class Form extends \Magento\Framework\View\Element\Template
 {
-
-    public function __construct(
+    /**
+     * Form constructor.
+     * @param Context $context
+     * @param array $data
+     */
+    public function __construct
+    (
         Context $context,
         array $data = []
-    ) {
+    )
+    {
         parent::__construct($context, $data);
     }
 
-    /**
-     * Get form title
-     */
-    public function getTitle()
-    {
-        echo __("Ask question");
-    }
 
     /**
      * Get faq form post action

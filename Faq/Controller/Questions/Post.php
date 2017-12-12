@@ -3,6 +3,7 @@
 namespace Inchoo\Faq\Controller\Questions;
 
 use Inchoo\Faq\Api\FaqRepositoryInterface;
+use Inchoo\Faq\Api\Data\FaqInterfaceFactory;
 use Inchoo\Faq\Controller\Base\Controller;
 use Inchoo\Faq\Model\Faq;
 use Magento\Customer\Model\Session;
@@ -10,13 +11,15 @@ use Magento\Framework\Data\Form\FormKey\Validator;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\View\Result\PageFactory;
 
 class Post extends Controller
 {
     /**
-     * @var \Inchoo\Faq\Api\FaqRepositoryInterfaceFactory
+     * @var FaqRepositoryInterface
      */
-    private $faqRepositoryFactory;
+    private $faqRepository;
+
     /**
      * @var \Inchoo\Faq\Api\Data\FaqInterfaceFactory
      */
@@ -26,21 +29,28 @@ class Post extends Controller
      * @var Session
      */
     protected $customerSession;
+
     /**
      * @var Validator
      */
     private $formKeyValidator;
 
+    /**
+     * @var StoreManagerInterface
+     */
     private $storeManager;
 
+    /**
+     * @var ManagerInterface
+     */
     private $eventManager;
 
 
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Inchoo\Faq\Api\Data\FaqInterfaceFactory $faq,
-        \Inchoo\Faq\Api\FaqRepositoryInterfaceFactory $faqRepositoryInterfaceFactory,
+        PageFactory $resultPageFactory,
+        FaqInterfaceFactory $faq,
+        FaqRepositoryInterface $faqRepositoryInterface,
         Session $session,
         Validator $formKeyValidator,
         StoreManagerInterface $storeManager,
@@ -48,7 +58,7 @@ class Post extends Controller
     ) {
 
         $this->faqFactory = $faq;
-        $this->faqRepositoryFactory = $faqRepositoryInterfaceFactory;
+        $this->faqRepository = $faqRepositoryInterface;
         $this->customerSession = $session;
         $this->formKeyValidator = $formKeyValidator;
         $this->storeManager = $storeManager;
@@ -67,8 +77,6 @@ class Post extends Controller
 
         if ($this->formKeyValidator->validate($this->getRequest()) && $this->getRequest()->isPost())
         {
-            /** @var FaqRepositoryInterface $faqRepository */
-            $faqRepository = $this->faqRepositoryFactory->create();
             $webViewId = $this->storeManager->getStore()->getId();
             $question = $this->getRequest()->getParam('question');
 
@@ -79,7 +87,7 @@ class Post extends Controller
                 $faq->setProductId($this->getRequest()->getParam('id'));
                 $faq->setQuestion($question);
                 $faq->setWebViewId($webViewId);
-                $faqRepository->save($faq);
+                $this->faqRepository->save($faq);
                 $this->eventManager->dispatch(
                     'new_question',
                     ['question' => $question]

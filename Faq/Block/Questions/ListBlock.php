@@ -10,6 +10,7 @@ namespace Inchoo\Faq\Block\Questions;
 
 use Inchoo\Faq\Model\ResourceModel\Faq\Collection;
 use Inchoo\Faq\Model\ResourceModel\Faq\CollectionFactory;
+use Magento\Customer\Model\Session;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context;
 
@@ -21,6 +22,11 @@ class ListBlock extends \Magento\Framework\View\Element\Template
     private $faqCollectionFactory;
 
     /**
+     * @var Session
+     */
+    private $customerSession;
+
+    /**
      * @var Registry
      */
     private $registry;
@@ -30,37 +36,31 @@ class ListBlock extends \Magento\Framework\View\Element\Template
      * @param Context $context
      * @param array $data
      * @param CollectionFactory $collectionFactory
+     * @param Session $session
      * @param Registry $registry
      */
     public function __construct(
         Context $context,
         array $data = [],
         CollectionFactory $collectionFactory,
+        Session $session,
         Registry $registry
     ) {
         $this->faqCollectionFactory = $collectionFactory;
+        $this->customerSession = $session;
         $this->registry = $registry;
         parent::__construct($context, $data);
     }
 
-    /**
-     * Returns title
-     *
-     * @return \Magento\Framework\Phrase
-     */
-    public function getTitle()
-    {
-        return  __("My questions");
-    }
 
     /**
      * Return single url
      *
      * @return string
      */
-    public function getSingleUrl()
+    public function getSingleUrl($id)
     {
-        return $this->getBaseUrl() . 'faq/questions/index/id/';
+        return $this->getUrl('faq/questions/index/', ['id' => $id]);
     }
 
     /**
@@ -70,11 +70,10 @@ class ListBlock extends \Magento\Framework\View\Element\Template
      */
     public function getQuestions()
     {
-        $userId = $this->registry->registry('userId');
+        $userId = $this->customerSession->getId();
         /** @var Collection $faqCollection */
         $faqCollection = $this->faqCollectionFactory->create();
         $faqCollection->addProductInfo();
-        $faqCollection->addFieldToFilter('product_table.attribute_id', 73);
         $faqCollection->addFieldToFilter('user_id', $userId);
         $faqCollection->addFieldToFilter('webview_id', $this->_storeManager->getStore()->getId()); //73,126
 

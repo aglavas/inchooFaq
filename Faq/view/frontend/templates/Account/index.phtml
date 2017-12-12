@@ -5,7 +5,7 @@
 /** @var \Inchoo\Faq\Model\Faq $question */
 $question = $block->getQuestionData();
 ?>
-<h1 style="color: #1979c3"><?= $block->getTitle() . $question->getId(); ?></h1>
+<h1 style="color: #1979c3"><?= __("Question id: ") . $question->getId(); ?></h1>
 <dl>
     <dt><?=__('Question')?></dt>
     <dd><?=$block->escapeHtml($question->getQuestion())?></dd>
@@ -14,7 +14,7 @@ $question = $block->getQuestionData();
     <dt><?=__('Product')?></dt>
     <dd>
         <a class="product-item-link"
-           href="<?=$block->getBaseUrl() .  $question->getProductUrl()?>">
+           href="<?=$block->getProductUrl()?>">
             <?= $question->getProductName() ?>
         </a>
     </dd>

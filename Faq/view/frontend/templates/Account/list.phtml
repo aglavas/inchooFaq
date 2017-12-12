@@ -16,15 +16,11 @@
         </tr>
         </thead>
         <tbody>
-    <?php
-
-    foreach ($block->getQuestions() as $question)
-    {
-    ?>
+    <?php foreach ($block->getQuestions() as $question): ?>
         <tr>
             <td data-th="<?= $block->escapeHtml(__('Id #')) ?>" class="col id">
                 <a class="product-item-link"
-                   href="<?=$block->getSingleUrl() . $question->getId() ?>">
+                   href="<?=$block->getSingleUrl($question->getId()) ?>">
                     <?= $question->getId()  ?>
                 </a>
             </td>
@@ -33,10 +29,7 @@
             <td data-th="<?= $block->escapeHtml(__('Product')) ?>" class="col product"> <?= $question->getProductName() ?>  </td>
             <td data-th="<?= $block->escapeHtml(__('Date')) ?>" class="col date"><?= $question->getDate() ?></td>
         </tr>
-    <?php
-    }
-
-    ?>
+    <?php endforeach; ?>
 
         </tbody>
     </table>

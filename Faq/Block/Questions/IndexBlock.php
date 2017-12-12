@@ -8,17 +8,12 @@
 
 namespace Inchoo\Faq\Block\Questions;
 
-use Inchoo\Faq\Api\FaqRepositoryInterfaceFactory;
-use Inchoo\Faq\Model\ResourceModel\Faq\CollectionFactory;
+use Inchoo\Faq\Model\ViewModel\Faq;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context;
 
 class IndexBlock extends \Magento\Framework\View\Element\Template
 {
-    /**
-     * @var CollectionFactory
-     */
-    private $faqCollectionFactory;
 
     /**
      * @var Registry
@@ -26,40 +21,20 @@ class IndexBlock extends \Magento\Framework\View\Element\Template
     private $registry;
 
     /**
-     * @var FaqRepositoryInterfaceFactory
-     */
-    private $faqRepositoryFactory;
-
-    /**
      * IndexBlock constructor.
      * @param Context $context
      * @param array $data
-     * @param CollectionFactory $collectionFactory
      * @param Registry $registry
-     * @param FaqRepositoryInterfaceFactory $faqRepositoryInterfaceFactory
      */
     public function __construct(
         Context $context,
         array $data = [],
-        CollectionFactory $collectionFactory,
-        Registry $registry,
-        FaqRepositoryInterfaceFactory $faqRepositoryInterfaceFactory
+        Registry $registry
     ) {
-        $this->faqCollectionFactory = $collectionFactory;
         $this->registry = $registry;
-        $this->faqRepositoryFactory = $faqRepositoryInterfaceFactory;
         parent::__construct($context, $data);
     }
 
-    /**
-     * Returns title
-     *
-     * @return \Magento\Framework\Phrase
-     */
-    public function getTitle()
-    {
-        return __("Question id: ");
-    }
 
     /**
      * Return single question data
@@ -68,9 +43,8 @@ class IndexBlock extends \Magento\Framework\View\Element\Template
      */
     public function getQuestionData()
     {
-        $questionId = $this->registry->registry('questionId');
-        $faqRepository = $this->faqRepositoryFactory->create();
-        $question = $faqRepository->getById($questionId);
+        $question = $this->registry->registry('question');
+
         return $question;
     }
 
@@ -82,7 +56,20 @@ class IndexBlock extends \Magento\Framework\View\Element\Template
      */
     public function getListUrl()
     {
-        return $this->getBaseUrl() . 'faq/questions/list';
+        return $this->getUrl('faq/questions/list');
+    }
+
+    /**
+     * Return product url
+     *
+     * @return string
+     */
+    public function getProductUrl()
+    {
+        /** @var Faq $question */
+        $question = $this->registry->registry('question');
+
+        return $this->getUrl($question->getProductUrl());
     }
 
 

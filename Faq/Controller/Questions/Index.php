@@ -2,9 +2,11 @@
 
 namespace Inchoo\Faq\Controller\Questions;
 
+use Inchoo\Faq\Api\FaqRepositoryInterface;
 use Inchoo\Faq\Controller\Base\Controller;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\Exception\NotFoundException;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\Registry;
 
@@ -20,14 +22,20 @@ class Index extends Controller
      */
     private $registry;
 
+    /**
+     * @var FaqRepositoryInterface
+     */
+    private $faqRepository;
+
 
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         Registry $registry,
-        Session $session
+        Session $session,
+        FaqRepositoryInterface $faqRepositoryInterface
     ) {
-
+        $this->faqRepository = $faqRepositoryInterface;
         $this->resultPageFactory = $resultPageFactory;
         $this->registry = $registry;
         parent::__construct($context, $session);
@@ -35,12 +43,19 @@ class Index extends Controller
 
     /**
      * @return \Magento\Framework\View\Result\Page
+     * @throws NotFoundException
      */
     public function execute()
     {
         $questionId = $this->_request->getParam('id');
-        $this->registry->register('userId', $this->userId);
-        $this->registry->register('questionId', $questionId);
+        $faq = $this->faqRepository->getById($questionId);
+
+        if($faq->getUserId() != $this->userId)
+        {
+            throw new NotFoundException(__('Question not found.'));
+        }
+
+        $this->registry->register('question', $faq);
         return $this->renderMyQuestionsPage($this->resultPageFactory, 'faq.questions.index' );
     }
 }

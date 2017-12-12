@@ -2,10 +2,13 @@
 
 namespace Inchoo\Faq\Ui\Component;
 
+use Inchoo\Faq\Model\ResourceModel\Faq\Collection;
 use Inchoo\Faq\Model\ResourceModel\Faq\CollectionFactory;
+use Magento\Catalog\Model\Product\Attribute\RepositoryFactory;
 
 class FaqListDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
+
     /**
      * FaqListDataProvider constructor.
      * @param string $name
@@ -33,14 +36,9 @@ class FaqListDataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      */
     public function getData()
     {
-        /**
-         * This is just a hack-around to use one DataProvider for both grid and form,
-         * it's probably really bad idea
-         */
-        $data = $this->getCollection()
-            ->addProductInfo()
-            ->addFieldToFilter('product_table.attribute_id', 73)
-            ->toArray();
+        /** @var Collection $collection */
+        $collection = $this->getCollection();
+        $data = $collection->addProductInfo()->toArray();
 
         return $data;
     }

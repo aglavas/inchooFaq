@@ -3,13 +3,10 @@
 ?>
 
 <div class="faq-list" style="float: left; width: 50%; display: inline-block;">
-    <h2 style="color: #1979c3"><?php $block->getTitle();?></h2>
+    <h2 style="color: #1979c3"><?= __("Previous questions:")?></h2>
 
     <dl>
-    <?php
-        foreach ($block->getPublishedQuestions() as $question)
-        {
-    ?>
+    <?php foreach ($block->getPublishedQuestions() as $question): ?>
         <div>
             <dt><?=__('Question')?></dt>
                 <dd><?=$question->getQuestion()?></dd>
@@ -17,7 +14,5 @@
                 <dd><?=$question->getAnswer()?></dd>
         </div>
         <hr>
-    <?php
-        }
-    ?>
+    <?php endforeach; ?>
 </div>

@@ -6,7 +6,7 @@
  */
 namespace Inchoo\Faq\Controller\Adminhtml\Questions\Delete;
 
-use Inchoo\Faq\Api\FaqRepositoryInterfaceFactory;
+use Inchoo\Faq\Api\FaqRepositoryInterface;
 use Inchoo\Faq\Controller\Adminhtml\Base\Controller;
 use Inchoo\Faq\Model\Faq;
 use Magento\Backend\App\Action\Context;
@@ -17,22 +17,23 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class Index extends Controller
 {
     /**
-     * @var FaqRepositoryInterfaceFactory
+     * @var FaqRepositoryInterface
      */
-    private $faqRepositoryFactory;
+    private $faqRepository;
+
 
     /**
      * Index constructor.
      * @param Context $context
-     * @param FaqRepositoryInterfaceFactory $faqRepositoryInterfaceFactory
+     * @param FaqRepositoryInterface $faqRepositoryInterface
      */
     public function __construct
     (
         Context $context,
-        FaqRepositoryInterfaceFactory $faqRepositoryInterfaceFactory
+        FaqRepositoryInterface $faqRepositoryInterface
     )
     {
-        $this->faqRepositoryFactory = $faqRepositoryInterfaceFactory;
+        $this->faqRepository = $faqRepositoryInterface;
         parent::__construct($context);
     }
 
@@ -48,16 +49,15 @@ class Index extends Controller
 
         if($id)
         {
-            $faqRepository = $this->faqRepositoryFactory->create();
             try {
                 /** @var Faq $faq */
-                $faq = $faqRepository->getById($id);
+                $faq = $this->faqRepository->getById($id);
 
                 if (!$faq->getId()) {
                     throw new NoSuchEntityException(__('Question with id "%1" does not exist.', $id));
                 }
 
-                $faqRepository->delete($faq);
+                $this->faqRepository->delete($faq);
 
                 $this->messageManager->addSuccessMessage(__('The question  has been deleted.'));
 

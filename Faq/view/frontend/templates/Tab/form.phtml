@@ -11,7 +11,7 @@
 
 <div class="faq-form" style="float: right; width: 50%; display: inline-block;">
 
-    <h2 style="color: #1979c3"><?= $block->getTitle()?></h2>
+    <h2 style="color: #1979c3"><?= __("Ask question")?></h2>
 
     <form action="<?= $block->escapeUrl($block->getAction()) ?>" class="review-form" method="post" id="review-form" data-role="product-review-form" data-bind="scope: 'review-form'">
         <?= $block->getBlockHtml('formkey') ?>

@@ -3,7 +3,6 @@
 namespace Inchoo\Faq\Controller\Adminhtml\Questions\Edit;
 
 use Inchoo\Faq\Api\FaqRepositoryInterface;
-use Inchoo\Faq\Api\FaqRepositoryInterfaceFactory;
 use Inchoo\Faq\Controller\Adminhtml\Base\Controller;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\Redirect;
@@ -14,20 +13,20 @@ class Save extends Controller
     /**
      * @var FaqRepositoryInterface
      */
-    private $faqRepositoryFactory;
+    private $faqRepository;
 
     /**
      * Save constructor.
      * @param Context $context
-     * @param FaqRepositoryInterfaceFactory $faqRepositoryInterfaceFactory
+     * @param FaqRepositoryInterface $faqRepositoryInterface
      */
     public function __construct
     (
         Context $context,
-        FaqRepositoryInterfaceFactory $faqRepositoryInterfaceFactory
+        FaqRepositoryInterface $faqRepositoryInterface
     )
     {
-        $this->faqRepositoryFactory = $faqRepositoryInterfaceFactory;
+        $this->faqRepository = $faqRepositoryInterface;
         parent::__construct($context);
     }
 
@@ -43,12 +42,11 @@ class Save extends Controller
 
         if($id && $data)
         {
-            $faqRepository = $this->faqRepositoryFactory->create();
-            $faq = $faqRepository->getById($id);
+            $faq = $this->faqRepository->getById($id);
             $faq->setData($data);
 
             try{
-                $faqRepository->save($faq);
+                $this->faqRepository->save($faq);
             }catch (CouldNotSaveException $exception)
             {
                 $this->messageManager->addErrorMessage(__('Question not updated, please try again.'));
